@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lbl_scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@color/white"
+        android:text="@string/score_label"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_blue"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:tag="blue"
+            android:alpha="0.3"
+            android:soundEffectsEnabled="false"
+            android:layout_weight="0.5"
+            android:backgroundTint="@color/lightBlue" />
+
+        <Button
+            android:id="@+id/btn_red"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:tag="red"
+            android:alpha="0.3"
+            android:soundEffectsEnabled="false"
+            android:layout_weight="0.5"
+            android:backgroundTint="@color/lightRed" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_yellow"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:tag="yellow"
+            android:alpha="0.3"
+            android:soundEffectsEnabled="false"
+            android:layout_weight="0.5"
+            android:backgroundTint="@color/lightYellow" />
+
+        <Button
+            android:id="@+id/btn_green"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:tag="green"
+            android:alpha="0.3"
+            android:soundEffectsEnabled="false"
+            android:layout_weight="0.5"
+            android:backgroundTint="@color/lightGreen" />
+
+    </LinearLayout>
+
+</LinearLayout>
