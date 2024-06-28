@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +17,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class FourButtons extends Fragment {
+
+    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private static final Random random = new Random();
+    private static final long DELAY = 1200;
 
     private List<Button> buttons;
     private List<Button> lightedButtons;
@@ -55,44 +66,37 @@ public class FourButtons extends Fragment {
     private void lightUpButton() {
         setupButtonsClickListener();
 
-        Handler handler = new Handler();
         int timeDelay = 0;
         for (int i = 1; i <= lightedButtons.size(); i++) {
             Button lightedButton = lightedButtons.get(i - 1);
-
-            handler.postDelayed(() -> {
-                lightButton(lightedButton, 1000);
-            }, 1000L * i);
+            executorService.schedule(() -> mainHandler.post(() -> lightButton(lightedButton, 1000)), DELAY * i, TimeUnit.MILLISECONDS);
             timeDelay = i;
         }
 
-        handler.postDelayed(() -> {
-            Random random = new Random();
+        executorService.schedule(() -> {
             int number = random.nextInt(buttons.size());
 
             Button selectedButton = buttons.get(number);
-            lightButton(selectedButton, 1000);
-            lightedButtons.add(selectedButton);
-        }, 1000L * (timeDelay + 1));
+            mainHandler.post(() -> {
+                lightButton(selectedButton, 1000);
+                lightedButtons.add(selectedButton);
+            });
+        }, DELAY * (timeDelay + 1), TimeUnit.MILLISECONDS);
 
-        handler.postDelayed(this::setupButtonsClickListener, 1000L * (timeDelay + 2));
+        executorService.schedule(this::setupButtonsClickListener, DELAY * (timeDelay + 2), TimeUnit.MILLISECONDS);
     }
+
 
     private void lightButton(Button button, int duration) {
         button.setAlpha(1.0f);
 
         playSounds((String) button.getTag());
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            button.setAlpha(0.3f);
-        }, duration);
+        mainHandler.postDelayed(() -> button.setAlpha(0.3f), duration);
     }
 
     private void buttonClick(View view) {
-        if(buttonClickCounter >= lightedButtons.size()) {
-            return;
-        }
+        if(buttonClickCounter >= lightedButtons.size()) return;
 
         clickedButtons.add((Button) view);
         if(clickedButtons.get(buttonClickCounter) != lightedButtons.get(buttonClickCounter) && getActivity() != null) {
@@ -135,16 +139,13 @@ public class FourButtons extends Fragment {
 
     private void setupButtonsClickListener() {
         for (Button button : buttons) {
-            if(button.hasOnClickListeners()) {
-                button.setOnClickListener(null);
-            } else {
-                button.setOnClickListener(this::buttonClick);
-            }
+            if(button.hasOnClickListeners()) button.setOnClickListener(null);
+            else button.setOnClickListener(this::buttonClick);
         }
     }
 
     private void playSounds(String buttonColor) {
-        switch (buttonColor){
+        switch (buttonColor.toLowerCase()) {
             case "red":
                 soundRedButton.start();
                 break;
