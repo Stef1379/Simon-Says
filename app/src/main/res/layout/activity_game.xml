@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:paddingHorizontal="16dp">
 
         <TextView
             android:id="@+id/lbl_scoreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:background="@color/white"
             android:text="@string/score_label"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textColor="@color/black" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
             android:id="@+id/btn_autonomous"
+            android:minWidth="240dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/toggle_automatic_mode"/>
-    </LinearLayout>
+            android:text="@string/enable_automatic_mode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -52,7 +53,8 @@
             android:backgroundTint="@color/lightBlue"
             android:contentDescription="@string/speakable_blue_button"
             android:soundEffectsEnabled="false"
-            android:tag="blue" />
+            android:tag="blue"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/btn_red"
@@ -64,7 +66,8 @@
             android:backgroundTint="@color/lightRed"
             android:contentDescription="@string/speakable_red_button"
             android:soundEffectsEnabled="false"
-            android:tag="red" />
+            android:tag="red"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/btn_yellow"
@@ -76,7 +79,8 @@
             android:backgroundTint="@color/lightYellow"
             android:contentDescription="@string/speakable_yellow_button"
             android:soundEffectsEnabled="false"
-            android:tag="yellow" />
+            android:tag="yellow"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/btn_green"
@@ -88,7 +92,8 @@
             android:backgroundTint="@color/lightGreen"
             android:contentDescription="@string/speakable_green_button"
             android:soundEffectsEnabled="false"
-            android:tag="green" />
+            android:tag="green"
+            tools:ignore="VisualLintButtonSize" />
 
     </GridLayout>
 </LinearLayout>
