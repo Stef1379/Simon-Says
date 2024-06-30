@@ -47,7 +47,7 @@
             android:paddingVertical="16dp"
             android:text="@string/restart_game_btn"
             android:textColor="@color/white"
-            app:backgroundTint="@color/purple_500"
+            app:backgroundTint="@color/blue_500"
             app:cornerRadius="24dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
             android:paddingVertical="16dp"
             android:text="@string/exit_game_btn"
             android:textColor="@color/white"
-            app:backgroundTint="@color/purple_500"
+            app:backgroundTint="@color/blue_500"
             app:cornerRadius="24dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
