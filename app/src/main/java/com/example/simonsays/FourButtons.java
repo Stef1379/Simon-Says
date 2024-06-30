@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class FourButtons extends Fragment {
 
@@ -36,6 +33,7 @@ public class FourButtons extends Fragment {
     private int buttonClickCounter;
     private int score;
     private View view;
+    private TextView scoreText;
 
     private MediaPlayer soundRedButton;
     private MediaPlayer soundBlueButton;
@@ -46,14 +44,13 @@ public class FourButtons extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_four_buttons, container, false);
+        scoreText = view.findViewById(R.id.lbl_scoreText);
+
+        lightedButtons = new ArrayList<>();
 
         setupButtons();
-        lightedButtons = new ArrayList<>();
-        clickedButtons = new ArrayList<>();
-        lightUpButton();
-        buttonClickCounter = 0;
-        score = 0;
-        setScore();
+        setupButtonsClickListener();
+        startCycle(0);
 
         soundRedButton = MediaPlayer.create(getContext(), R.raw.sound_red_button);
         soundBlueButton = MediaPlayer.create(getContext(), R.raw.sound_blue_button);
@@ -63,65 +60,54 @@ public class FourButtons extends Fragment {
         return view;
     }
 
-    private void lightUpButton() {
-        setupButtonsClickListener();
-
-        int timeDelay = 0;
-        for (int i = 1; i <= lightedButtons.size(); i++) {
-            Button lightedButton = lightedButtons.get(i - 1);
-            executorService.schedule(() -> mainHandler.post(() -> lightButton(lightedButton, 1000)), DELAY * i, TimeUnit.MILLISECONDS);
-            timeDelay = i;
-        }
-
-        executorService.schedule(() -> {
-            int number = random.nextInt(buttons.size());
-
-            Button selectedButton = buttons.get(number);
-            mainHandler.post(() -> {
-                lightButton(selectedButton, 1000);
-                lightedButtons.add(selectedButton);
-            });
-        }, DELAY * (timeDelay + 1), TimeUnit.MILLISECONDS);
-
-        executorService.schedule(this::setupButtonsClickListener, DELAY * (timeDelay + 2), TimeUnit.MILLISECONDS);
+    private void startCycle(int score) {
+        clickedButtons = new ArrayList<>();
+        buttonClickCounter = 0;
+        lightUpButtons();
+        this.score = score;
+        setScore();
     }
 
+    private void lightUpButtons() {
+        setupButtonsClickListener();
+
+        long totalDelay = 0;
+        for (int i = 0; i < lightedButtons.size(); i++) {
+            final Button lightedButton = lightedButtons.get(i);
+            totalDelay += DELAY;
+            mainHandler.postDelayed(() -> lightButton(lightedButton, 1000), totalDelay);
+        }
+
+        int number = random.nextInt(buttons.size());
+        Button selectedButton = buttons.get(number);
+        lightedButtons.add(selectedButton);
+
+        totalDelay += DELAY;
+        mainHandler.postDelayed(() -> lightButton(selectedButton, 1000), totalDelay);
+        mainHandler.postDelayed(this::setupButtonsClickListener, totalDelay + DELAY);
+    }
 
     private void lightButton(Button button, int duration) {
         button.setAlpha(1.0f);
-
         playSounds((String) button.getTag());
-
         mainHandler.postDelayed(() -> button.setAlpha(0.3f), duration);
     }
 
     private void buttonClick(View view) {
-        if(buttonClickCounter >= lightedButtons.size()) return;
-
-        clickedButtons.add((Button) view);
-        if(clickedButtons.get(buttonClickCounter) != lightedButtons.get(buttonClickCounter) && getActivity() != null) {
-            Intent intent = new Intent(getContext(), GameOverActivity.class);
-            intent.putExtra("score", score);
-            startActivity(intent);
-            getActivity().finish();
+        if(buttonClickCounter >= lightedButtons.size() || view != lightedButtons.get(buttonClickCounter)) {
+            gameOver();
             return;
         }
 
+        clickedButtons.add((Button) view);
+        buttonClickCounter++;
         lightButton((Button) view, 200);
         playSounds((String) view.getTag());
-        buttonClickCounter++;
 
-        if(clickedButtons.size() == lightedButtons.size()) {
-            clickedButtons.clear();
-            buttonClickCounter = 0;
-            lightUpButton();
-            score++;
-            setScore();
-        }
+        if(clickedButtons.size() == lightedButtons.size()) startCycle(score + 1);
     }
 
     private void setScore() {
-        TextView scoreText = view.findViewById(R.id.lbl_scoreText);
         scoreText.setText(getString(R.string.score_label, score));
     }
 
@@ -131,10 +117,6 @@ public class FourButtons extends Fragment {
         buttons.add(view.findViewById(R.id.btn_green));
         buttons.add(view.findViewById(R.id.btn_red));
         buttons.add(view.findViewById(R.id.btn_yellow));
-
-        for (Button button : buttons) {
-            button.setOnClickListener(this::buttonClick);
-        }
     }
 
     private void setupButtonsClickListener() {
@@ -144,20 +126,34 @@ public class FourButtons extends Fragment {
         }
     }
 
+    private void gameOver() {
+        if (getActivity() == null) return;
+
+        Intent intent = new Intent(getContext(), GameOverActivity.class);
+        intent.putExtra("score", score);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
     private void playSounds(String buttonColor) {
         switch (buttonColor.toLowerCase()) {
             case "red":
-                soundRedButton.start();
+                playSound(soundRedButton);
                 break;
             case "blue":
-                soundBlueButton.start();
+                playSound(soundBlueButton);
                 break;
             case "green":
-                soundGreenButton.start();
+                playSound(soundGreenButton);
                 break;
             case "yellow":
-                soundYellowButton.start();
+                playSound(soundYellowButton);
                 break;
         }
+    }
+
+    private void playSound(MediaPlayer player) {
+        player.seekTo(0);
+        player.start();
     }
 }
