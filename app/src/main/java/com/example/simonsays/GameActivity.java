@@ -49,9 +49,9 @@ public class GameActivity extends AppCompatActivity {
         startCycle(0);
 
         Button autonomousButton = findViewById(R.id.btn_autonomous);
-        autonomousButton.setOnClickListener(view -> {
+        autonomousButton.setOnClickListener(_ -> {
             AUTONOMOUS = !AUTONOMOUS;
-            autonomousButton.setText(AUTONOMOUS ? R.string.enable_automatic_mode : R.string.disable_automatic_mode);
+            autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
             if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
         });
     }
