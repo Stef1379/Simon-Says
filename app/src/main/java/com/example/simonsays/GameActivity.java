@@ -3,16 +3,14 @@ package com.example.simonsays;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.os.Looper;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,8 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class FourButtons extends Fragment {
+public class GameActivity extends AppCompatActivity {
 
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
     private static final Random random = new Random();
     private static final long DELAY = 1200;
@@ -32,7 +29,6 @@ public class FourButtons extends Fragment {
     private List<Button> clickedButtons;
     private int buttonClickCounter;
     private int score;
-    private View view;
     private TextView scoreText;
 
     private MediaPlayer soundRedButton;
@@ -41,10 +37,11 @@ public class FourButtons extends Fragment {
     private MediaPlayer soundYellowButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_four_buttons, container, false);
-        scoreText = view.findViewById(R.id.lbl_scoreText);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_game);
+        scoreText = findViewById(R.id.lbl_scoreText);
 
         lightedButtons = new ArrayList<>();
 
@@ -52,12 +49,10 @@ public class FourButtons extends Fragment {
         setupButtonsClickListener();
         startCycle(0);
 
-        soundRedButton = MediaPlayer.create(getContext(), R.raw.sound_red_button);
-        soundBlueButton = MediaPlayer.create(getContext(), R.raw.sound_blue_button);
-        soundGreenButton = MediaPlayer.create(getContext(), R.raw.sound_green_button);
-        soundYellowButton = MediaPlayer.create(getContext(), R.raw.sound_yellow_button);
-
-        return view;
+        soundRedButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_red_button);
+        soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
+        soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
+        soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
     }
 
     private void startCycle(int score) {
@@ -113,10 +108,10 @@ public class FourButtons extends Fragment {
 
     private void setupButtons() {
         buttons = new ArrayList<>();
-        buttons.add(view.findViewById(R.id.btn_blue));
-        buttons.add(view.findViewById(R.id.btn_green));
-        buttons.add(view.findViewById(R.id.btn_red));
-        buttons.add(view.findViewById(R.id.btn_yellow));
+        buttons.add(findViewById(R.id.btn_blue));
+        buttons.add(findViewById(R.id.btn_green));
+        buttons.add(findViewById(R.id.btn_red));
+        buttons.add(findViewById(R.id.btn_yellow));
     }
 
     private void setupButtonsClickListener() {
@@ -127,12 +122,10 @@ public class FourButtons extends Fragment {
     }
 
     private void gameOver() {
-        if (getActivity() == null) return;
-
-        Intent intent = new Intent(getContext(), GameOverActivity.class);
+        Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
         intent.putExtra("score", score);
         startActivity(intent);
-        getActivity().finish();
+        finish();
     }
 
     private void playSounds(String buttonColor) {

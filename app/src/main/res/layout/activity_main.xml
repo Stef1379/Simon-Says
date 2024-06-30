@@ -35,18 +35,4 @@
             android:text="@string/start_game_btn"
             android:textColor="@color/white" />
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/game_area"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/game_area_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

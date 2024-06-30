@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
         Button startGame = findViewById(R.id.btn_start);
         startGame.setOnClickListener(v -> {
-            LinearLayout startGameLayout = findViewById(R.id.start_game_layout);
-            startGameLayout.setVisibility(View.GONE);
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.game_area_fragment, new FourButtons(), "four_buttons").commit();
+            Intent intent = new Intent(this, GameActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }
