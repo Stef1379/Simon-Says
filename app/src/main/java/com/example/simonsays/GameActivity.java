@@ -45,12 +45,8 @@ public class GameActivity extends AppCompatActivity {
 
         setupButtons();
         setupButtonsClickListener();
+        setupSounds();
         startCycle(0);
-
-        soundRedButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_red_button);
-        soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
-        soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
-        soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
 
         Button autonomousButton = findViewById(R.id.btn_autonomous);
         autonomousButton.setOnClickListener(view -> {
@@ -143,6 +139,18 @@ public class GameActivity extends AppCompatActivity {
         intent.putExtra("score", score);
         startActivity(intent);
         finish();
+    }
+
+    private void setupSounds() {
+        soundRedButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_red_button);
+        soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
+        soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
+        soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
+
+        soundRedButton.setVolume(1, 1);
+        soundBlueButton.setVolume(1, 1);
+        soundGreenButton.setVolume(1, 1);
+        soundYellowButton.setVolume(1, 1);
     }
 
     private void playSounds(String buttonColor) {
