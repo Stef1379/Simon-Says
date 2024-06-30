@@ -7,4 +7,8 @@
     <string name="game_over_label">Game Over!</string>
     <string name="game_over_score_label">Your score was: %1$d</string>
     <string name="start_game_label">Simon Says</string>
+    <string name="speakable_blue_button">Blue button</string>
+    <string name="speakable_red_button">Red button</string>
+    <string name="speakable_yellow_button">Yellow button</string>
+    <string name="speakable_green_button">Green button</string>
 </resources>

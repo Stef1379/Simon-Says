@@ -9,14 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -39,7 +36,6 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
         scoreText = findViewById(R.id.lbl_scoreText);
 
@@ -53,6 +49,16 @@ public class GameActivity extends AppCompatActivity {
         soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
         soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
         soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mainHandler.removeCallbacksAndMessages(null);
+        stopAndReleaseMediaPlayer(soundRedButton);
+        stopAndReleaseMediaPlayer(soundBlueButton);
+        stopAndReleaseMediaPlayer(soundGreenButton);
+        stopAndReleaseMediaPlayer(soundYellowButton);
     }
 
     private void startCycle(int score) {
@@ -148,5 +154,11 @@ public class GameActivity extends AppCompatActivity {
     private void playSound(MediaPlayer player) {
         player.seekTo(0);
         player.start();
+    }
+
+    private void stopAndReleaseMediaPlayer(MediaPlayer player) {
+        if (player == null) return;
+        if (player.isPlaying()) player.stop();
+        player.release();
     }
 }

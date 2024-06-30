@@ -15,60 +15,60 @@
         android:textSize="18sp"
         android:textColor="@color/black" />
 
-    <LinearLayout
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnCount="2"
+        android:rowCount="2">
 
         <Button
             android:id="@+id/btn_blue"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:tag="blue"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:alpha="0.3"
+            android:backgroundTint="@color/lightBlue"
+            android:contentDescription="@string/speakable_blue_button"
             android:soundEffectsEnabled="false"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/lightBlue" />
+            android:tag="blue" />
 
         <Button
             android:id="@+id/btn_red"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:tag="red"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:alpha="0.3"
+            android:backgroundTint="@color/lightRed"
+            android:contentDescription="@string/speakable_red_button"
             android:soundEffectsEnabled="false"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/lightRed" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
+            android:tag="red" />
 
         <Button
             android:id="@+id/btn_yellow"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:tag="yellow"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
             android:alpha="0.3"
+            android:backgroundTint="@color/lightYellow"
+            android:contentDescription="@string/speakable_yellow_button"
             android:soundEffectsEnabled="false"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/lightYellow" />
+            android:tag="yellow" />
 
         <Button
             android:id="@+id/btn_green"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:tag="green"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:alpha="0.3"
+            android:backgroundTint="@color/lightGreen"
+            android:contentDescription="@string/speakable_green_button"
             android:soundEffectsEnabled="false"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/lightGreen" />
+            android:tag="green" />
 
-    </LinearLayout>
-
+    </GridLayout>
 </LinearLayout>
