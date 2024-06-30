@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.ConsentType;
+import com.google.firebase.analytics.FirebaseAnalytics.ConsentStatus;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,22 +23,22 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
 
-        Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new EnumMap<>(FirebaseAnalytics.ConsentType.class);
-        consentMap.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE, FirebaseAnalytics.ConsentStatus.GRANTED);
-        consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE, FirebaseAnalytics.ConsentStatus.GRANTED);
-        consentMap.put(FirebaseAnalytics.ConsentType.AD_USER_DATA, FirebaseAnalytics.ConsentStatus.GRANTED);
-        consentMap.put(FirebaseAnalytics.ConsentType.AD_PERSONALIZATION, FirebaseAnalytics.ConsentStatus.GRANTED);
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Map<ConsentType, ConsentStatus> consentMap = new EnumMap<>(ConsentType.class);
+        consentMap.put(ConsentType.ANALYTICS_STORAGE, ConsentStatus.GRANTED);
+        consentMap.put(ConsentType.AD_STORAGE, ConsentStatus.GRANTED);
+        consentMap.put(ConsentType.AD_USER_DATA, ConsentStatus.GRANTED);
+        consentMap.put(ConsentType.AD_PERSONALIZATION, ConsentStatus.GRANTED);
 
         firebaseAnalytics.setConsent(consentMap);
 
-
         Button startGame = findViewById(R.id.btn_start);
-        startGame.setOnClickListener(v -> {
+        startGame.setOnClickListener(_ -> {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
-            finish();
         });
     }
 }

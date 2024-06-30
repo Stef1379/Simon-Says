@@ -96,4 +96,14 @@
             tools:ignore="VisualLintButtonSize" />
 
     </GridLayout>
+
+    <RelativeLayout
+        android:id="@+id/game_ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.gms.ads.AdView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </LinearLayout>

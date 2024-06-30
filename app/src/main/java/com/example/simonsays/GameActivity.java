@@ -1,15 +1,24 @@
 package com.example.simonsays;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +39,9 @@ public class GameActivity extends AppCompatActivity {
     private int score;
     private TextView scoreText;
 
+    private RelativeLayout adContainerView;
+    private AdView adView;
+
     private MediaPlayer soundRedButton;
     private MediaPlayer soundBlueButton;
     private MediaPlayer soundGreenButton;
@@ -40,6 +52,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         scoreText = findViewById(R.id.lbl_scoreText);
+        adContainerView = findViewById(R.id.game_ad_container);
+        loadBanner();
 
         lightedButtons = new ArrayList<>();
 
@@ -54,6 +68,36 @@ public class GameActivity extends AppCompatActivity {
             autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
             if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
         });
+    }
+
+    public static Display getDefaultDisplay(Context context) {
+        DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        return displayManager.getDisplay(Display.DEFAULT_DISPLAY);
+    }
+
+    private AdSize getAdSize() {
+        Display display = getDefaultDisplay(this);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getRealMetrics(outMetrics);
+
+        float density = outMetrics.density;
+        float adWidthPixels = adContainerView.getWidth();
+        if (adWidthPixels == 0) adWidthPixels = outMetrics.widthPixels;
+
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+
+    private void loadBanner() {
+        AdView adView = new AdView(this);
+        adView.setAdSize(getAdSize());
+        adView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");
+
+        adContainerView.removeAllViews();
+        adContainerView.addView(adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override
