@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920520764725",
+    "project_id": "simon-innovatiotechnologica",
+    "storage_bucket": "simon-innovatiotechnologica.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920520764725:android:00233873403340c5a1b07c",
+        "android_client_info": {
+          "package_name": "com.innovatiotechnologica.simonsays"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvDO5-yxra02NT4SN1r_eltNzFVceyzM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
