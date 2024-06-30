@@ -5,43 +5,8 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/game_over_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:text="@string/game_over_label" />
-
-    <TextView
-        android:id="@+id/game_over_score_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:text="@string/game_over_score_label" />
-
-    <Button
-        android:id="@+id/btn_restart"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/game_over_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="32dp"
-        android:text="@string/restart_game_btn"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/btn_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="32dp"
-        android:text="@string/exit_game_btn"
-        android:textColor="@color/white" />
+        android:layout_height="match_parent" />
 </LinearLayout>

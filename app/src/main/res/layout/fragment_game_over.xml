@@ -7,32 +7,57 @@
     android:background="@drawable/gradient_background">
 
     <LinearLayout
-        android:id="@+id/start_game_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/game_over_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/game_over_label"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/game_over_score_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/app_name"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/game_over_score_label"
             android:textColor="@color/white"
-            android:textSize="48sp" />
+            android:textSize="24sp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_start"
+            android:id="@+id/btn_restart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="225dp"
+            android:layout_marginBottom="16dp"
             android:paddingHorizontal="48dp"
             android:paddingVertical="16dp"
-            android:text="@string/start_game_btn"
+            android:text="@string/restart_game_btn"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/purple_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="225dp"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/exit_game_btn"
             android:textColor="@color/white"
             app:backgroundTint="@color/purple_500"
             app:cornerRadius="24dp" />
