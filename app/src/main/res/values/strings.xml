@@ -11,4 +11,5 @@
     <string name="speakable_red_button">Red button</string>
     <string name="speakable_yellow_button">Yellow button</string>
     <string name="speakable_green_button">Green button</string>
+    <string name="toggle_automatic_mode">Toggle Automatic Mode</string>
 </resources>

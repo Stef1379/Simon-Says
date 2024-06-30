@@ -20,6 +20,8 @@ public class GameActivity extends AppCompatActivity {
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
     private static final Random random = new Random();
     private static final long DELAY = 1200;
+    private static final long AUTONOMOUS_DELAY = 600;
+    private static boolean AUTONOMOUS = false;
 
     private List<Button> buttons;
     private List<Button> lightedButtons;
@@ -49,6 +51,12 @@ public class GameActivity extends AppCompatActivity {
         soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
         soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
         soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
+
+        Button autonomousButton = findViewById(R.id.btn_autonomous);
+        autonomousButton.setOnClickListener(view -> {
+            AUTONOMOUS = !AUTONOMOUS;
+            if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
+        });
     }
 
     @Override
@@ -85,7 +93,10 @@ public class GameActivity extends AppCompatActivity {
 
         totalDelay += DELAY;
         mainHandler.postDelayed(() -> lightButton(selectedButton, 1000), totalDelay);
-        mainHandler.postDelayed(this::setupButtonsClickListener, totalDelay + DELAY);
+        mainHandler.postDelayed(() -> {
+            setupButtonsClickListener();
+            if (AUTONOMOUS) playGameAutonomous();
+        }, totalDelay + DELAY);
     }
 
     private void lightButton(Button button, int duration) {
@@ -160,5 +171,9 @@ public class GameActivity extends AppCompatActivity {
         if (player == null) return;
         if (player.isPlaying()) player.stop();
         player.release();
+    }
+
+    private void playGameAutonomous() {
+        lightedButtons.forEach(button -> mainHandler.postDelayed(button::performClick, AUTONOMOUS_DELAY));
     }
 }
