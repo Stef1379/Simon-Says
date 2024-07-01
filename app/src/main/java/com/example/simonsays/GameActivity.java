@@ -10,15 +10,19 @@ import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView scoreText;
 
     private RelativeLayout adContainerView;
-    private AdView adView;
+    private ConstraintLayout overlayLayout;
 
     private MediaPlayer soundRedButton;
     private MediaPlayer soundBlueButton;
@@ -60,7 +64,7 @@ public class GameActivity extends AppCompatActivity {
         setupButtons();
         setupButtonsClickListener();
         setupSounds();
-        startCycle(0);
+        setupOverlay();
 
         Button autonomousButton = findViewById(R.id.btn_autonomous);
         autonomousButton.setOnClickListener(_ -> {
@@ -98,6 +102,12 @@ public class GameActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if (AUTONOMOUS) toggleAutonomous();
+        showOverlay();
     }
 
     @Override
@@ -228,5 +238,84 @@ public class GameActivity extends AppCompatActivity {
 
     private void playGameAutonomous() {
         lightedButtons.forEach(button -> mainHandler.postDelayed(button::performClick, AUTONOMOUS_DELAY));
+    }
+}
+    private void setupOverlay() {
+        overlayLayout = new ConstraintLayout(this);
+        overlayLayout.setBackgroundColor(0xAA000000); // Semi-transparent black background
+        overlayLayout.setClickable(true);
+        overlayLayout.setFocusable(true);
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+        );
+        overlayLayout.setLayoutParams(layoutParams);
+
+        LinearLayout containerLayout = new LinearLayout(this);
+        containerLayout.setOrientation(LinearLayout.VERTICAL);
+        containerLayout.setBackground(getDrawable(R.drawable.rounded_gradient_background));
+        containerLayout.setPadding(128, 128, 128, 128);
+        containerLayout.setClickable(true);
+        containerLayout.setFocusable(true);
+
+        ConstraintLayout.LayoutParams containerParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        containerParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        containerParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        containerParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        containerParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        containerLayout.setLayoutParams(containerParams);
+
+        TextView pausedText = new TextView(this);
+        pausedText.setText(R.string.paused);
+        pausedText.setTextSize(24);
+        pausedText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        pausedText.setTextColor(0xFFFFFFFF); // White color
+        pausedText.setPadding(48, 16, 48, 32);
+
+        MaterialButton resumeButton = new MaterialButton(this);
+        resumeButton.setText(R.string.resume_game);
+        resumeButton.setPadding(48, 16, 48, 16);
+        resumeButton.setCornerRadius(24);
+        resumeButton.setBackgroundTintList(getResources().getColorStateList(R.color.blue_500));
+        resumeButton.setTextColor(0xFFFFFFFF);
+        resumeButton.setOnClickListener(v -> {
+            hideOverlay();
+            startCycle(score);
+        });
+
+        MaterialButton restartButton = new MaterialButton(this);
+        restartButton.setText(R.string.restart);
+        restartButton.setPadding(48, 16, 48, 16);
+        restartButton.setCornerRadius(24);
+        restartButton.setBackgroundTintList(getResources().getColorStateList(R.color.blue_500));
+        restartButton.setTextColor(0xFFFFFFFF);
+        restartButton.setOnClickListener(v -> {
+            hideOverlay();
+            score = 0;
+            startCycle(score);
+        });
+
+        containerLayout.addView(pausedText);
+        containerLayout.addView(resumeButton);
+        containerLayout.addView(restartButton);
+        overlayLayout.addView(containerLayout);
+    }
+
+    private void showOverlay() {
+        if (overlayLayout.getParent() == null) {
+            addContentView(overlayLayout, new ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT
+            ));
+        }
+        overlayLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void hideOverlay() {
+        overlayLayout.setVisibility(View.GONE);
     }
 }

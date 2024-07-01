@@ -13,4 +13,7 @@
     <string name="speakable_green_button">Green</string>
     <string name="enable_automatic_mode">Enable Automatic Mode</string>
     <string name="disable_automatic_mode">Disable Automatic Mode</string>
+    <string name="paused">Paused</string>
+    <string name="resume_game">Resume</string>
+    <string name="restart">Restart</string>
 </resources>
