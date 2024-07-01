@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-    id("com.google.firebase.crashlytics")
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
 }
 
 android {
@@ -34,6 +35,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.1.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
+    implementation("com.google.firebase:firebase-perf")
+
     implementation 'com.google.android.gms:play-services-ads:23.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
