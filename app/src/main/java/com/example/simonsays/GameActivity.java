@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,8 +35,11 @@ public class GameActivity extends AppCompatActivity {
 
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
     private static final Random random = new Random();
-    private static final long DELAY = 1200;
     private static final long AUTONOMOUS_DELAY = 600;
+    private static final long MIN_DELAY = 100;
+    private static final long MAX_DELAY = 800;
+
+    private static long DELAY = 800;
     private static boolean AUTONOMOUS = false;
 
     private List<Button> buttons;
@@ -43,7 +49,6 @@ public class GameActivity extends AppCompatActivity {
     private int score;
 
     private TextView scoreText;
-    private Button autonomousButton;
 
     private RelativeLayout adContainerView;
     private AdView adView;
@@ -59,7 +64,6 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        autonomousButton = findViewById(R.id.btn_autonomous);
         scoreText = findViewById(R.id.lbl_scoreText);
         adContainerView = findViewById(R.id.game_ad_container);
         loadBanner();
@@ -72,11 +76,32 @@ public class GameActivity extends AppCompatActivity {
         setupButtonsClickListener();
         setupSounds();
         addLightButton();
+    }
 
-        autonomousButton.setOnClickListener(_ -> {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.toggle_speed) {
+            toggleGameSpeed();
+            return true;
+        }
+        if (item.getItemId() == R.id.toggle_autonomous) {
             toggleAutonomous();
             if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
-        });
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleGameSpeed() {
+        if (DELAY == MIN_DELAY) DELAY = MAX_DELAY;
+        else if (DELAY == MAX_DELAY) DELAY = MIN_DELAY;
     }
 
     public static Display getDefaultDisplay(Context context) {
@@ -180,8 +205,8 @@ public class GameActivity extends AppCompatActivity {
         long totalDelay = 0;
         for (int i = 0; i < lightedButtons.size(); i++) {
             final Button lightedButton = lightedButtons.get(i);
-            totalDelay += DELAY;
-            mainHandler.postDelayed(() -> lightButton(lightedButton, 1000), totalDelay);
+            totalDelay += DELAY + (100L * lightedButtons.size());
+            mainHandler.postDelayed(() -> lightButton(lightedButton, (int) DELAY), totalDelay);
         }
 
         mainHandler.postDelayed(() -> {
@@ -289,6 +314,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void toggleAutonomous() {
         AUTONOMOUS = !AUTONOMOUS;
-        autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
+//        autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
     }
 }
