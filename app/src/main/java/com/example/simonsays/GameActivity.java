@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,8 +35,12 @@ public class GameActivity extends AppCompatActivity {
 
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
     private static final Random random = new Random();
-    private static final long DELAY = 1200;
     private static final long AUTONOMOUS_DELAY = 600;
+    private static final int MIN_DURATION = 200;
+    private static final int MAX_DURATION = 800;
+    private static final int DELAY = 200;
+
+    private static int DURATION = MAX_DURATION;
     private static boolean AUTONOMOUS = false;
 
     private List<Button> buttons;
@@ -59,7 +66,6 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        autonomousButton = findViewById(R.id.btn_autonomous);
         scoreText = findViewById(R.id.lbl_scoreText);
         adContainerView = findViewById(R.id.game_ad_container);
         loadBanner();
@@ -72,11 +78,37 @@ public class GameActivity extends AppCompatActivity {
         setupButtonsClickListener();
         setupSounds();
         addLightButton();
+    }
 
-        autonomousButton.setOnClickListener(_ -> {
-            toggleAutonomous();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_toggle_speed) {
+            toggleGameSpeed();
+            toggleGameSpeedLabel(item);
+            return true;
+        }
+        if (item.getItemId() == R.id.action_toggle_mode) {
+            toggleAutonomous(item);
             if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
-        });
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleGameSpeed() {
+        DURATION = DURATION == MIN_DURATION ? MAX_DURATION : MIN_DURATION;
+    }
+
+    private void toggleGameSpeedLabel(MenuItem item) {
+        if (item.getTitle() == getString(R.string.speed_1_label)) item.setTitle(R.string.speed_2_label);
+        else item.setTitle(R.string.speed_1_label);
     }
 
     public static Display getDefaultDisplay(Context context) {
@@ -153,7 +185,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void resumeGame() {
-        if (AUTONOMOUS) toggleAutonomous();
+        if (AUTONOMOUS) toggleAutonomous(findViewById(R.id.action_toggle_mode));
         if (buttons.stream().noneMatch(View::hasOnClickListeners)) setupButtonsClickListener();
         startCycle(score);
     }
@@ -177,17 +209,17 @@ public class GameActivity extends AppCompatActivity {
     private void lightUpButtons() {
         setupButtonsClickListener();
 
-        long totalDelay = 0;
+        int totalDelay = 0;
         for (int i = 0; i < lightedButtons.size(); i++) {
             final Button lightedButton = lightedButtons.get(i);
-            totalDelay += DELAY;
-            mainHandler.postDelayed(() -> lightButton(lightedButton, 1000), totalDelay);
+            totalDelay += DURATION + DELAY;
+            mainHandler.postDelayed(() -> lightButton(lightedButton, DURATION), totalDelay);
         }
 
         mainHandler.postDelayed(() -> {
             setupButtonsClickListener();
             if (AUTONOMOUS) playGameAutonomous();
-        }, totalDelay + DELAY);
+        }, totalDelay + DURATION);
     }
 
     private void lightButton(Button button, int duration) {
@@ -287,8 +319,8 @@ public class GameActivity extends AppCompatActivity {
         lightedButtons.forEach(button -> mainHandler.postDelayed(button::performClick, AUTONOMOUS_DELAY));
     }
 
-    private void toggleAutonomous() {
+    private void toggleAutonomous(MenuItem item) {
         AUTONOMOUS = !AUTONOMOUS;
-        autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
+        item.setTitle(AUTONOMOUS ? R.string.autonomous_mode : R.string.manual_mode);
     }
 }
