@@ -10,15 +10,19 @@ import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +41,9 @@ public class GameActivity extends AppCompatActivity {
     private List<Button> clickedButtons;
     private int buttonClickCounter;
     private int score;
+
     private TextView scoreText;
+    private Button autonomousButton;
 
     private RelativeLayout adContainerView;
     private AdView adView;
@@ -51,21 +57,24 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        autonomousButton = findViewById(R.id.btn_autonomous);
         scoreText = findViewById(R.id.lbl_scoreText);
         adContainerView = findViewById(R.id.game_ad_container);
         loadBanner();
+        adListener();
 
         lightedButtons = new ArrayList<>();
+        score = 0;
 
         setupButtons();
         setupButtonsClickListener();
         setupSounds();
-        startCycle(0);
+        addLightButton();
 
-        Button autonomousButton = findViewById(R.id.btn_autonomous);
         autonomousButton.setOnClickListener(_ -> {
-            AUTONOMOUS = !AUTONOMOUS;
-            autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
+            toggleAutonomous();
             if (buttons.stream().allMatch(View::hasOnClickListeners)) playGameAutonomous();
         });
     }
@@ -89,9 +98,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void loadBanner() {
-        AdView adView = new AdView(this);
+        adView = new AdView(this);
         adView.setAdSize(getAdSize());
-        adView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");
+        adView.setAdUnitId(getString(R.string.ad_unit_id));
 
         adContainerView.removeAllViews();
         adContainerView.addView(adView);
@@ -100,14 +109,61 @@ public class GameActivity extends AppCompatActivity {
         adView.loadAd(adRequest);
     }
 
+    private void adListener() {
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adContainerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                super.onAdFailedToLoad(adError);
+                adContainerView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAdClicked() {
+                pauseGame();
+            }
+
+            @Override
+            public void onAdClosed() {
+                resumeGame();
+            }
+
+            @Override
+            public void onAdOpened() {
+                pauseGame();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resumeGame();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
+        pauseGame();
+    }
+
+    private void resumeGame() {
+        if (AUTONOMOUS) toggleAutonomous();
+        if (buttons.stream().noneMatch(View::hasOnClickListeners)) setupButtonsClickListener();
+        startCycle(score);
+    }
+
+    private void pauseGame() {
         mainHandler.removeCallbacksAndMessages(null);
-        stopAndReleaseMediaPlayer(soundRedButton);
-        stopAndReleaseMediaPlayer(soundBlueButton);
-        stopAndReleaseMediaPlayer(soundGreenButton);
-        stopAndReleaseMediaPlayer(soundYellowButton);
+        stopMediaPlayer(soundRedButton);
+        stopMediaPlayer(soundBlueButton);
+        stopMediaPlayer(soundGreenButton);
+        stopMediaPlayer(soundYellowButton);
     }
 
     private void startCycle(int score) {
@@ -128,12 +184,6 @@ public class GameActivity extends AppCompatActivity {
             mainHandler.postDelayed(() -> lightButton(lightedButton, 1000), totalDelay);
         }
 
-        int number = random.nextInt(buttons.size());
-        Button selectedButton = buttons.get(number);
-        lightedButtons.add(selectedButton);
-
-        totalDelay += DELAY;
-        mainHandler.postDelayed(() -> lightButton(selectedButton, 1000), totalDelay);
         mainHandler.postDelayed(() -> {
             setupButtonsClickListener();
             if (AUTONOMOUS) playGameAutonomous();
@@ -157,7 +207,16 @@ public class GameActivity extends AppCompatActivity {
         lightButton((Button) view, 200);
         playSounds((String) view.getTag());
 
-        if(clickedButtons.size() == lightedButtons.size()) startCycle(score + 1);
+        if(clickedButtons.size() == lightedButtons.size()) {
+            addLightButton();
+            startCycle(score + 1);
+        }
+    }
+
+    private void addLightButton() {
+        int number = random.nextInt(buttons.size());
+        Button selectedButton = buttons.get(number);
+        lightedButtons.add(selectedButton);
     }
 
     private void setScore() {
@@ -220,13 +279,16 @@ public class GameActivity extends AppCompatActivity {
         player.start();
     }
 
-    private void stopAndReleaseMediaPlayer(MediaPlayer player) {
-        if (player == null) return;
-        if (player.isPlaying()) player.stop();
-        player.release();
+    private void stopMediaPlayer(MediaPlayer player) {
+        if (player != null && player.isPlaying()) player.stop();
     }
 
     private void playGameAutonomous() {
         lightedButtons.forEach(button -> mainHandler.postDelayed(button::performClick, AUTONOMOUS_DELAY));
+    }
+
+    private void toggleAutonomous() {
+        AUTONOMOUS = !AUTONOMOUS;
+        autonomousButton.setText(AUTONOMOUS ? R.string.disable_automatic_mode : R.string.enable_automatic_mode);
     }
 }
