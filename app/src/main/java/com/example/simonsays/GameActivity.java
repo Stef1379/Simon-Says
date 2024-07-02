@@ -323,6 +323,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void releaseMediaPlayer(MediaPlayer player){
+        stopMediaPlayer(player);
         if (player != null) player.release();
     }
 
