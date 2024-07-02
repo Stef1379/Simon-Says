@@ -186,6 +186,15 @@ public class GameActivity extends AppCompatActivity {
         pauseGame();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releaseMediaPlayer(soundRedButton);
+        releaseMediaPlayer(soundBlueButton);
+        releaseMediaPlayer(soundGreenButton);
+        releaseMediaPlayer(soundYellowButton);
+    }
+
     private void resumeGame() {
         if (menu != null && AUTONOMOUS) toggleAutonomous(menu.findItem(R.id.action_toggle_mode));
         if (buttons.stream().noneMatch(View::hasOnClickListeners)) setupButtonsClickListener();
@@ -285,11 +294,6 @@ public class GameActivity extends AppCompatActivity {
         soundBlueButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_blue_button);
         soundGreenButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_green_button);
         soundYellowButton = MediaPlayer.create(getApplicationContext(), R.raw.sound_yellow_button);
-
-        soundRedButton.setVolume(1, 1);
-        soundBlueButton.setVolume(1, 1);
-        soundGreenButton.setVolume(1, 1);
-        soundYellowButton.setVolume(1, 1);
     }
 
     private void playSounds(String buttonColor) {
@@ -316,6 +320,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void stopMediaPlayer(MediaPlayer player) {
         if (player != null && player.isPlaying()) player.stop();
+    }
+
+    private void releaseMediaPlayer(MediaPlayer player){
+        if (player != null) player.release();
     }
 
     private void playGameAutonomous() {

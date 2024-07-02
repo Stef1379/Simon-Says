@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 public class GameOverActivity extends AppCompatActivity {
 
+    private MediaPlayer fail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +18,13 @@ public class GameOverActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.game_over_fragment_container, new GameOverFragment()).commit();
 
-        MediaPlayer.create(this, R.raw.fail).start();
+        fail = MediaPlayer.create(this, R.raw.fail);
+        fail.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fail.release();
     }
 }

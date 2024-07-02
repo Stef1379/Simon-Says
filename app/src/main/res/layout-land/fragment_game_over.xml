@@ -41,6 +41,16 @@
             android:text="@string/game_over_score_label"
             android:textColor="@color/white"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/game_over_high_score_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/game_over_high_score_label"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
     </LinearLayout>
 
         <LinearLayout

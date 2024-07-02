@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">Simon says</string>
+    <string name="start_game_label">Simon Says</string>
     <string name="start_game_btn">Start Game</string>
     <string name="restart_game_btn">Restart Game</string>
 
     <string name="exit_game_btn">Exit Game</string>
     <string name="score_label">Score: %1$d</string>
     <string name="game_over_label">Game Over!</string>
+
     <string name="game_over_score_label">Your score was: %1$d</string>
-    <string name="start_game_label">Simon Says</string>
+    <string name="game_over_high_score_label">High score: %1$d</string>
+
 
     <string name="speakable_blue_button">Blue</string>
     <string name="speakable_red_button">Red</string>
