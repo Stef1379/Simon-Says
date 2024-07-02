@@ -50,7 +50,6 @@ public class GameActivity extends AppCompatActivity {
     private int score;
 
     private TextView scoreText;
-    private Button autonomousButton;
     private Menu menu;
 
     private RelativeLayout adContainerView;
