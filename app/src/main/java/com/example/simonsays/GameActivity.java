@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
 
     private TextView scoreText;
     private Button autonomousButton;
+    private Menu menu;
 
     private RelativeLayout adContainerView;
     private AdView adView;
@@ -84,6 +85,7 @@ public class GameActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -185,13 +187,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void resumeGame() {
-        if (AUTONOMOUS) toggleAutonomous(findViewById(R.id.action_toggle_mode));
+        if (menu != null && AUTONOMOUS) toggleAutonomous(menu.findItem(R.id.action_toggle_mode));
         if (buttons.stream().noneMatch(View::hasOnClickListeners)) setupButtonsClickListener();
         startCycle(score);
     }
 
     private void pauseGame() {
         mainHandler.removeCallbacksAndMessages(null);
+        buttons.forEach(button -> button.setAlpha(0.3f));
         stopMediaPlayer(soundRedButton);
         stopMediaPlayer(soundBlueButton);
         stopMediaPlayer(soundGreenButton);
