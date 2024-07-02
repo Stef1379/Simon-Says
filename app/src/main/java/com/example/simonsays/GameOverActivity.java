@@ -25,6 +25,7 @@ public class GameOverActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (fail.isPlaying()) fail.stop();
         fail.release();
     }
 }
