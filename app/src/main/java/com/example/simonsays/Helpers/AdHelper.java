@@ -39,8 +39,10 @@ public class AdHelper {
         this.adContainerView = adContainerView;
         consentInformation = UserMessagingPlatform.getConsentInformation(context);
 
-        loadBanner();
-        adListener();
+        if (consentInformation.canRequestAds()) {
+            loadBanner();
+            adListener();
+        }
     }
 
     private void loadBanner() {
@@ -51,7 +53,7 @@ public class AdHelper {
         adContainerView.removeAllViews();
         adContainerView.addView(adView);
 
-        if (consentInformation.canRequestAds()) initializeMobileAdsSdk();
+        initializeMobileAdsSdk();
     }
 
     private AdSize getAdSize() {

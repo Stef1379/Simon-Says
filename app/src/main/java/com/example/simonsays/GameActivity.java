@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,6 +63,7 @@ public class GameActivity extends AppCompatActivity {
 
         setupButtons();
         setButtonsClickListener();
+        setOnBackPressedCallback();
         addLightButton();
     }
 
@@ -104,6 +106,18 @@ public class GameActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setOnBackPressedCallback() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AUTONOMOUS = false;
+                pauseGame();
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void toggleGameSpeed() {

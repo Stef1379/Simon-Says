@@ -47,6 +47,7 @@
             android:paddingVertical="16dp"
             android:text="@string/privacy_policy"
             android:textColor="@color/white"
+            android:visibility="invisible"
             app:backgroundTint="@color/blue_500"
             app:cornerRadius="24dp" />
 
