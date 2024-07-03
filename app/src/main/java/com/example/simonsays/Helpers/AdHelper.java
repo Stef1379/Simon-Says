@@ -18,10 +18,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.UserMessagingPlatform;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdHelper {
@@ -30,15 +26,14 @@ public class AdHelper {
 
     private final Context context;
     private final RelativeLayout adContainerView;
-    private final ConsentInformation consentInformation;
 
     private AdView adView;
 
     public AdHelper(Context context, RelativeLayout adContainerView) {
         this.context = context;
         this.adContainerView = adContainerView;
-        consentInformation = UserMessagingPlatform.getConsentInformation(context);
 
+        ConsentInformation consentInformation = UserMessagingPlatform.getConsentInformation(context);
         if (consentInformation.canRequestAds()) {
             loadBanner();
             adListener();
