@@ -15,17 +15,29 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.UserMessagingPlatform;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdHelper {
 
+    private static final AtomicBoolean isMobileAdsInitializeCalled = new AtomicBoolean(false);
+
     private final Context context;
     private final RelativeLayout adContainerView;
+    private final ConsentInformation consentInformation;
 
     private AdView adView;
 
     public AdHelper(Context context, RelativeLayout adContainerView) {
         this.context = context;
         this.adContainerView = adContainerView;
+        consentInformation = UserMessagingPlatform.getConsentInformation(context);
 
         loadBanner();
         adListener();
@@ -39,8 +51,7 @@ public class AdHelper {
         adContainerView.removeAllViews();
         adContainerView.addView(adView);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        if (consentInformation.canRequestAds()) initializeMobileAdsSdk();
     }
 
     private AdSize getAdSize() {
@@ -75,5 +86,13 @@ public class AdHelper {
                 adContainerView.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void initializeMobileAdsSdk() {
+        if (isMobileAdsInitializeCalled.getAndSet(true)) return;
+
+        MobileAds.initialize(context, initializationStatus -> {});
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 }
