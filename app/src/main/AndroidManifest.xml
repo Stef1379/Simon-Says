@@ -28,7 +28,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".GameOverActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

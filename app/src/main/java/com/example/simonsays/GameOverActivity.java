@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import com.example.simonsays.Helpers.AudioHelper;
+
 public class GameOverActivity extends AppCompatActivity {
 
-    private MediaPlayer fail;
+    private AudioHelper audioHelper;
+    private MediaPlayer audioGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +21,20 @@ public class GameOverActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.game_over_fragment_container, new GameOverFragment()).commit();
 
-        fail = MediaPlayer.create(this, R.raw.fail);
-        fail.start();
+        audioHelper = new AudioHelper(this);
+        audioGameOver = audioHelper.createGameOverAudio();
+        audioHelper.startMediaPlayer(audioGameOver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (fail.isPlaying()) fail.stop();
-        fail.release();
+        audioHelper.releaseMediaPlayer(audioGameOver);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        audioHelper.stopMediaPlayer(audioGameOver);
     }
 }
