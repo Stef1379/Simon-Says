@@ -34,13 +34,13 @@ public class GameActivity extends AppCompatActivity {
     private static final int DELAY = 200;
 
     private static int DURATION = MAX_DURATION;
-    private static boolean AUTONOMOUS = false;
 
     private List<Button> buttons;
     private List<Button> lightedButtons;
     private List<Button> clickedButtons;
     private int buttonClickCounter;
     private int score;
+    private boolean autonomous;
 
     private TextView scoreText;
     private Menu menu;
@@ -61,6 +61,7 @@ public class GameActivity extends AppCompatActivity {
 
         lightedButtons = new ArrayList<>();
         score = 0;
+        autonomous = false;
 
         setupButtons();
         setButtonsClickListener();
@@ -113,7 +114,6 @@ public class GameActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                AUTONOMOUS = false;
                 pauseGame();
                 finish();
             }
@@ -130,7 +130,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void resumeGame() {
-        if (menu != null && AUTONOMOUS) toggleAutonomous(menu.findItem(R.id.action_toggle_mode));
+        if (menu != null && autonomous) toggleAutonomous(menu.findItem(R.id.action_toggle_mode));
         if (buttons.stream().noneMatch(View::hasOnClickListeners)) setButtonsClickListener();
         startCycle(score);
     }
@@ -161,7 +161,7 @@ public class GameActivity extends AppCompatActivity {
 
         mainHandler.postDelayed(() -> {
             setButtonsClickListener();
-            if (AUTONOMOUS) playGameAutonomous();
+            if (autonomous) playGameAutonomous();
         }, totalDelay + DURATION);
     }
 
@@ -203,8 +203,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toggleAutonomous(MenuItem item) {
-        AUTONOMOUS = !AUTONOMOUS;
-        item.setTitle(AUTONOMOUS ? R.string.autonomous_mode : R.string.manual_mode);
+        autonomous = !autonomous;
+        item.setTitle(autonomous ? R.string.autonomous_mode : R.string.manual_mode);
     }
 
     private void setScore() {
