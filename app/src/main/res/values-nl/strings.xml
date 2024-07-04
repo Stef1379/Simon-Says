@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simon Zegt</string>
+    <string name="start_game_btn">Start Spel</string>
+    <string name="restart_game_btn">Herstart Spel</string>
+
+    <string name="exit_game_btn">Verlaat Spel</string>
+    <string name="score_label">Score: %1$d</string>
+    <string name="game_over_label">Game Over!</string>
+
+    <string name="game_over_score_label">Jouw score: %1$d</string>
+    <string name="game_over_high_score_label">Hoogste score: %1$d</string>
+
+    <string name="speakable_blue_button">Blauw</string>
+    <string name="speakable_red_button">Rood</string>
+    <string name="speakable_yellow_button">Geel</string>
+    <string name="speakable_green_button">Groen</string>
+
+    <string name="speed_1_label">1x snelheid</string>
+    <string name="speed_2_label">2x snelheid</string>
+
+    <string name="manual_mode">Handmatige modus</string>
+    <string name="autonomous_mode">Automatische modus</string>
+    <string name="privacy_policy">Privacybeleid</string>
+
+    <string name="age_restriction_title">Hoe oud ben je?</string>
+    <string name="younger_than_5">5 en jonger</string>
+    <string name="between_6_8">6–8</string>
+    <string name="between_9_12">9–12</string>
+    <string name="between_13_15">13–15</string>
+    <string name="between_16_17">16–17</string>
+    <string name="older_than_18">18 en ouder</string>
+    <string name="age_restriction_back_button_toast">Voer alstublieft uw leeftijd in</string>
+</resources>

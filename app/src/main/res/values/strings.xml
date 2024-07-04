@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Simon says</string>
-    <string name="start_game_label">Simon Says</string>
+    <string name="app_name">Simon Says</string>
     <string name="start_game_btn">Start Game</string>
     <string name="restart_game_btn">Restart Game</string>
 
@@ -10,7 +9,6 @@
 
     <string name="game_over_score_label">Your score was: %1$d</string>
     <string name="game_over_high_score_label">High score: %1$d</string>
-
 
     <string name="speakable_blue_button">Blue</string>
     <string name="speakable_red_button">Red</string>
@@ -23,4 +21,13 @@
     <string name="manual_mode">Manual mode</string>
     <string name="autonomous_mode">Automatic mode</string>
     <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="age_restriction_title">What age are you?</string>
+    <string name="younger_than_5">5 and younger</string>
+    <string name="between_6_8">6–8</string>
+    <string name="between_9_12">9–12</string>
+    <string name="between_13_15">13–15</string>
+    <string name="between_16_17">16–17</string>
+    <string name="older_than_18">18 and older</string>
+    <string name="age_restriction_back_button_toast">Please, enter your age</string>
 </resources>

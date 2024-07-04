@@ -8,5 +8,5 @@
     <item
         android:id="@+id/action_toggle_mode"
         android:title="@string/manual_mode"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

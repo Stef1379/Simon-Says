@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <LinearLayout
+        android:id="@+id/start_game_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/age_restriction_title"
+            android:textColor="@color/white"
+            android:textSize="48sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_younger_than_5"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/younger_than_5"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_between_6_8"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/between_6_8"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_between_9_12"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/between_9_12"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_between_13_15"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/between_13_15"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_between_16_17"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/between_16_17"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_older_than_18"
+            android:minWidth="@dimen/minButtonWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:text="@string/older_than_18"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_500"
+            app:cornerRadius="24dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

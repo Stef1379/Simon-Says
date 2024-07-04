@@ -52,6 +52,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         scoreText = findViewById(R.id.lbl_scoreText);
         RelativeLayout adContainerView = findViewById(R.id.game_ad_container);

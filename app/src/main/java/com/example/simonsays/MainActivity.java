@@ -36,12 +36,21 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("age_restriction", MODE_PRIVATE);
+        if (sharedPreferences.getString("content_rating", "").isEmpty()) {
+            Intent ageIntent = new Intent(this, AgeRestriction.class);
+            startActivity(ageIntent);
+        }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         Button startGame = findViewById(R.id.btn_start);
         startGame.setEnabled(false);
         startGame.setOnClickListener(_ -> {
-            Intent intent = new Intent(this, GameActivity.class);
-            startActivity(intent);
+            Intent gameIntent = new Intent(this, GameActivity.class);
+            startActivity(gameIntent);
         });
 
         Button privacySettingsButton = findViewById(R.id.btn_privacy);
@@ -79,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean isPrivacyOptionsRequired() {
-        return consentInformation.getPrivacyOptionsRequirementStatus()
-                == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED;
+        return consentInformation != null && consentInformation.getPrivacyOptionsRequirementStatus()
+                                            == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED;
     }
 
     private void setFirebaseConsent() {

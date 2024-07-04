@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simon Sagt</string>
+    <string name="start_game_btn">Spiel starten</string>
+    <string name="restart_game_btn">Spiel neu starten</string>
+
+    <string name="exit_game_btn">Spiel beenden</string>
+    <string name="score_label">Punktestand: %1$d</string>
+    <string name="game_over_label">Spiel vorbei!</string>
+
+    <string name="game_over_score_label">Dein Punktestand war: %1$d</string>
+    <string name="game_over_high_score_label">Höchstpunktzahl: %1$d</string>
+
+    <string name="speakable_blue_button">Blau</string>
+    <string name="speakable_red_button">Rot</string>
+    <string name="speakable_yellow_button">Gelb</string>
+    <string name="speakable_green_button">Grün</string>
+
+    <string name="speed_1_label">1x Geschwindigkeit</string>
+    <string name="speed_2_label">2x Geschwindigkeit</string>
+
+    <string name="manual_mode">Manueller Modus</string>
+    <string name="autonomous_mode">Automatischer Modus</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+
+    <string name="age_restriction_title">Wie alt bist du?</string>
+    <string name="younger_than_5">5 und jünger</string>
+    <string name="between_6_8">6–8</string>
+    <string name="between_9_12">9–12</string>
+    <string name="between_13_15">13–15</string>
+    <string name="between_16_17">16–17</string>
+    <string name="older_than_18">18 und älter</string>
+    <string name="age_restriction_back_button_toast">Bitte gib dein Alter ein</string>
+</resources>
