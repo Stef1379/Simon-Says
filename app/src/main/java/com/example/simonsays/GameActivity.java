@@ -110,15 +110,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setOnBackPressedCallback() {
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 AUTONOMOUS = false;
                 pauseGame();
                 finish();
             }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
+        });
     }
 
     private void toggleGameSpeed() {
