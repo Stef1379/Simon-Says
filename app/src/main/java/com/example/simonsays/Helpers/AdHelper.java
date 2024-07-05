@@ -94,7 +94,7 @@ public class AdHelper {
     private void initializeMobileAdsSdk(String contentRating, int underAgeOfConsent) {
         if (isMobileAdsInitializeCalled.getAndSet(true)) return;
 
-        MobileAds.initialize(context, initializationStatus -> {});
+        MobileAds.initialize(context, _ -> {});
 
         RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
                 .toBuilder()

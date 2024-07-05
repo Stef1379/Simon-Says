@@ -36,15 +36,15 @@ public class GameOverFragment extends Fragment {
         highScoreLabel.setText(getString(R.string.game_over_high_score_label, highScore));
 
         Button restartButton = view.findViewById(R.id.btn_restart);
-        restartButton.setOnClickListener(v -> {
+        restartButton.setOnClickListener(_ -> {
             Intent intent = new Intent(getContext(), GameActivity.class);
             startActivity(intent);
             getActivity().finish();
         });
 
         Button ExitButton = view.findViewById(R.id.btn_exit);
-        ExitButton.setOnClickListener(v -> {
-            getActivity().finish();
+        ExitButton.setOnClickListener(_ -> {
+            getActivity().finishAffinity();
             System.exit(0);
         });
 
