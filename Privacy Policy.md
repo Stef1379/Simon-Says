@@ -3,7 +3,7 @@
 **Effective Date:** July 3, 2024
 
 ## Introduction
-Welcome to "Simon Says," a mobile game app developed by Innovatio Technologica. This privacy policy explains how we collect, use, and protect your information when you use our app.
+Welcome to "Simon Says," a mobile game app developed by Nose-Free Creations. This privacy policy explains how we collect, use, and protect your information for our app.
 
 ## 1. Data We Collect
 
