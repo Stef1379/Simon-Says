@@ -72,7 +72,7 @@ Welcome to "Simon Says," a mobile game app developed by Innovatio Technologica. 
 ## 8. Contact
 
 ### 8.1. Questions or Concerns
-- If you have any questions or concerns about this privacy policy, please contact us at [info@stefvdloo.nl](mailto:smajw.vandeloo@gmail.com).
+- If you have any questions or concerns about this privacy policy, please contact us at [smajw.vandeloo@gmail.com](mailto:smajw.vandeloo@gmail.com).
 
 ---
 
